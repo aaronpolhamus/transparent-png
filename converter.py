@@ -1,8 +1,6 @@
-from argparse import ArgumentParser
 import numpy as np
-
-from multiprocessing import Pool, cpu_count
 from PIL import Image
+from argparse import ArgumentParser
 
 parser = ArgumentParser(
     description="Convert a JPG of a black sketch against a contrasting background into a transparent PNG")
@@ -20,39 +18,20 @@ def sigmoid(value, offset=args.offset, steepness=args.steepness):
     return 255 / (1 + np.exp(steepness * (value + offset)))
 
 
-def apply_parallel(func, argument_tuples_iterator, n_workers=None):
-    """See https://stackoverflow.com/questions/5442910/python-multiprocessing-pool-map-for-multiple-arguments
-    """
-    if not n_workers:
-        n_workers = cpu_count()
-
-    with Pool(n_workers) as pool:
-        results = pool.starmap(func, argument_tuples_iterator)
-
-    return results
-
-
-def make_rgba(coords, rgb):
-    signature = np.mean(rgb)
-    alpha = int(sigmoid(signature))
-    return coords, rgb + (alpha,)
+def make_rgba(image):
+    img = np.asarray(Image.open(image))
+    signature = np.mean(img, axis=2)
+    alpha = sigmoid(signature)
+    filtered_img = np.dstack((img, alpha))
+    img_with_alpha = Image.fromarray(filtered_img.astype('uint8'))
+    return img_with_alpha
 
 
 if __name__ == "__main__":
-    im = Image.open(args.in_file)
-    out = Image.new("RGBA", im.size, (0, 0, 0, 0))
-    width, height = im.size
-    arg_tups = list()
-    for x in range(width):
-        for y in range(height):
-            r, g, b = im.getpixel((x, y))
-            arg_tups.append(((x, y), (r, g, b)))
+    out_img = make_rgba(args.image)
+    out_path = args.out_path
+    if out_path is None:
+        name = "./marciana.jpg".split("/")[-1].split(".")[0]
+        out_path = f"./{name}.png"
 
-    pixel_values = apply_parallel(make_rgba, arg_tups)
-    for pixel_values in pixel_values:
-        out.putpixel(pixel_values[0], pixel_values[1])
-
-    name = args.in_file.split("/")[-1].split(".")[0]
-    out_path = f"./{name}.png"
-
-    out.save(out_path)
+    out_img.save(out_path)
