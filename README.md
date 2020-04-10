@@ -1,5 +1,5 @@
 # transparent-png
-handy function for converting high-res whiteboard sketches to crisp, transparent PNGs
+handy function for converting high-res whiteboard sketches to crisp, transparent background PNGs
 
 ## Getting running
 Super easy: 
