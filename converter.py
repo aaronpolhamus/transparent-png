@@ -28,10 +28,9 @@ def make_rgba(image):
 
 
 if __name__ == "__main__":
-    out_img = make_rgba(args.image)
-    out_path = args.out_path
+    out_img = make_rgba(args.in_file)
+    out_path = args.out_file
     if out_path is None:
         name = "./marciana.jpg".split("/")[-1].split(".")[0]
         out_path = f"./{name}.png"
-
     out_img.save(out_path)
