@@ -7,10 +7,10 @@ from PIL import Image
 parser = ArgumentParser(
     description="Convert a JPG of a black sketch against a contrasting background into a transparent PNG")
 
-parser.add_argument("image", nargs="?", default="./marciana.jpg")
+parser.add_argument("--in_file", default="./marciana.jpg")
 parser.add_argument("--offset", type=int, default=-60)
 parser.add_argument("--steepness", type=float, default=0.25)
-parser.add_argument("--out_path", type=str, default=None)
+parser.add_argument("--out_file", type=str, default=None)
 args = parser.parse_args()
 
 
@@ -39,7 +39,7 @@ def make_rgba(coords, rgb):
 
 
 if __name__ == "__main__":
-    im = Image.open(args.image)
+    im = Image.open(args.in_file)
     out = Image.new("RGBA", im.size, (0, 0, 0, 0))
     width, height = im.size
     arg_tups = list()
@@ -52,9 +52,7 @@ if __name__ == "__main__":
     for pixel_values in pixel_values:
         out.putpixel(pixel_values[0], pixel_values[1])
 
-    out_path = args.out_path
-    if args.out_path is None:
-        name = "./marciana.jpg".split("/")[-1].split(".")[0]
-        out_path = f"./{name}.png"
+    name = args.in_file.split("/")[-1].split(".")[0]
+    out_path = f"./{name}.png"
 
     out.save(out_path)
