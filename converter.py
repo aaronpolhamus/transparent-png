@@ -18,13 +18,17 @@ def sigmoid(value, offset=args.offset, steepness=args.steepness):
     return 255 / (1 + np.exp(steepness * (value + offset)))
 
 
-if __name__ == "__main__":
-    img = np.asarray(Image.open(args.image))
+def make_rgba(image):
+    img = np.asarray(Image.open(image))
     signature = np.mean(img, axis=2)
     alpha = sigmoid(signature)
     filtered_img = np.dstack((img, alpha))
-    out_img = Image.fromarray(filtered_img.astype('uint8'))
+    img_with_alpha = Image.fromarray(filtered_img.astype('uint8'))
+    return img_with_alpha
 
+
+if __name__ == "__main__":
+    out_img = make_rgba(args.image)
     out_path = args.out_path
     if out_path is None:
         name = "./marciana.jpg".split("/")[-1].split(".")[0]
