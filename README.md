@@ -8,13 +8,8 @@ Super easy:
 * `pip install -r requirements.txt`
 * To test: `python converter.py`
 
-You should go from this...
-
-![Imgur](https://i.imgur.com/Ae7YVQa.jpg)
-
-to this:
-
-![Imgur](https://i.imgur.com/P5LO9v4.png)
+Here's the before and after: 
+![Imgur](https://imgur.com/cG8mXD1)
 
 You can point the converter at any file and manually specify the output file: `python converter.py --in_file /tmp/myjpeg.jpg --out_file mypng.png` 
 
