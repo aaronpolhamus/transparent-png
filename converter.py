@@ -1,6 +1,6 @@
 """This script file can place a transparent filter over an image based on an arbitrary number of colors. To use this
 functionality in triplets of RGB codes with simple space separation. To select red, green, and blue, for example, you
-would pass --targets 255 0 0 0 255 0 0 0 255. By default it the converter selects only the color black for filtering.
+would pass --targets 255 0 0 0 255 0 0 0 255. By default the converter selects only the color black for filtering.
 """
 
 from argparse import ArgumentParser
