@@ -30,7 +30,7 @@ args = parser.parse_args()
 def sigmoid(value, offset=args.offset, steepness=args.steepness):
     """Set the transparency of a pixel based on how dark it is. Pixels that aren't pretty close to black should wash out
     """
-    return 255/(1 + np.exp((steepness * value - offset))
+    return 255/(1 + np.exp(steepness * (value - offset)))
 
 
 def grouper(n, iterable):
